@@ -11,7 +11,7 @@ This template provides a production-quality, extensible codebase that lets you i
 pip install nerfstudio
 
 # 2. Clone and install this template
-git clone https://github.com/your-org/gs-method-template.git
+git clone https://github.com/jainsee24/gs-method-template.git
 cd gs-method-template
 pip install -e .
 ns-install-cli
