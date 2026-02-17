@@ -1,4 +1,4 @@
-# GS Method Template v2
+# GS Method Template
 
 A minimal, modular template for implementing Gaussian Splatting research papers as nerfstudio plugins.
 
