@@ -1,63 +1,32 @@
-# ============================================================================
-# gs-method-template: A Nerfstudio Plugin Template for Gaussian Splatting
-# ============================================================================
-# This pyproject.toml registers the Gaussian Splatting method with nerfstudio
-# via the entry-points system. After `pip install -e .`, run `ns-install-cli`
-# to make the method available as `ns-train gs-template --data <DATA_DIR>`.
-#
-# HOW IT WORKS:
-#   1. pip reads [project.entry-points.'nerfstudio.method_configs']
-#   2. nerfstudio discovers this via importlib.metadata.entry_points()
-#   3. It loads the MethodSpecification object from the specified module path
-#   4. The method becomes available in `ns-train --help`
-#
-# FOR PAPER AUTHORS:
-#   - Rename 'gs-template' to your method name (e.g., 'mip-splatting')
-#   - Rename 'gs_template' package to match (e.g., 'mip_splatting')
-#   - Update the entry-point path accordingly
-# ============================================================================
-
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "gs-method-template"
-version = "0.1.0"
-description = "A Nerfstudio plugin template for Gaussian Splatting methods using gsplat"
+version = "2.0.0"
+description = "Gaussian Splatting method template for nerfstudio (extends SplatfactoModel)"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 license = { text = "Apache-2.0" }
 
 dependencies = [
-    # Pin nerfstudio to avoid breaking API changes
-    "nerfstudio>=1.1.0",
-    # gsplat is the CUDA rasterization backend for Gaussian Splatting
-    # It provides: rasterization(), DefaultStrategy, MCMCStrategy, etc.
+    "nerfstudio",
     "gsplat>=1.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
+    "black",
+    "isort",
     "pytest",
-    "ruff",
 ]
 
-[tool.setuptools.packages.find]
-include = ["gs_template*"]
+[project.entry-points."nerfstudio.method_configs"]
+gs-template  = "gs_template.configs:gs_template_method"
+absgs        = "gs_template.configs:absgs_method"
+depth-reg-gs = "gs_template.configs:depth_reg_gs_method"
+feature-gs   = "gs_template.configs:feature_gs_method"
 
-# ============================================================================
-# ENTRY POINTS — This is how nerfstudio discovers your method
-# ============================================================================
-# Format: method-cli-name = 'python.module.path:MethodSpecificationObject'
-#
-# You can register MULTIPLE method variants here. For example:
-#   gs-template       = 'gs_template.config:gs_template_method'
-#   gs-template-big   = 'gs_template.config:gs_template_big_method'
-#   gs-template-mcmc  = 'gs_template.config:gs_template_mcmc_method'
-#
-# Each variant can have different default hyperparameters, strategies, etc.
-# ============================================================================
-[project.entry-points.'nerfstudio.method_configs']
-gs-template = 'gs_template.config:gs_template_method'
-gs-template-mcmc = 'gs_template.config:gs_template_mcmc_method'
+[tool.setuptools.packages]
+find = { include = ["gs_template", "gs_template.*"] }
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
